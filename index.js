@@ -36,13 +36,13 @@ function agregarTarea(nombre, tiempo) {
                         <button type="button" id="PararTiempo" class="btn btn-success w-50 h-50">COMPLETADA</button>
                     </div>
                     <div class="col justify-content-center d-flex">
-                        <button type="button" id="ContinuarTiempo" class="btn btn-warning w-50 h-50">CONTINUAR TAREA</button>
+                        <button type="button" id="ContinuarTiempo" class="btn btn-warning w-50 h-50" style="display: none;">CONTINUAR TAREA</button>
                     </div>
                 </div>
             </div>
     `;
 
-    
+
     ListaTareas.appendChild(tareas);
 
     const contadorTiempo = tareas.querySelector('.tiempo-cuenta');
@@ -50,6 +50,8 @@ function agregarTarea(nombre, tiempo) {
     let segundos = 0;
     let temporizador;
 
+    const btnPararTiempo = tareas.querySelector('#PararTiempo');
+    const btnContinuarTiempo = tareas.querySelector('#ContinuarTiempo');
 
     function iniciarTemporizador() {
         temporizador = setInterval(() => {
@@ -66,21 +68,25 @@ function agregarTarea(nombre, tiempo) {
         clearInterval(temporizador);
     }
 
-        
-    tareas.querySelector('#PararTiempo').addEventListener('click', function () {
 
+    btnPararTiempo.addEventListener('click', function () {
         tareas.classList.add('completada');
         detenerTemporizador();
         alert(`Tarea "${nombre}" marcada como completa. Tiempo invertido: ${Minutos} minutos : ${segundos} segundos`);
+        btnPararTiempo.style.display = 'none';
+        btnContinuarTiempo.style.display = 'inline-block';
     });
 
-    tareas.querySelector('#ContinuarTiempo').addEventListener('click', function (e) {
-        e.preventDefault;
-        confirm('Esta seguro que desea continuar con esta tarea')
-        iniciarTemporizador();
+    btnContinuarTiempo.addEventListener('click', function (e) {
+        e.preventDefault();
+        if (confirm('¿Está seguro que desea continuar con esta tarea?')) {
+            iniciarTemporizador();
+            btnPararTiempo.style.display = 'inline-block';
+            btnContinuarTiempo.style.display = 'none';
+        }
     });
-    
-    
+
+
     iniciarTemporizador();
 
 
